@@ -9,6 +9,8 @@ app.set("view engine", "pug");
 app.use(express.urlencoded());
 app.use(bodyParser());
 
+
+// SAMPLE DATA TO WORK WITH
 const data = [
     { "payer": "DANNON", "points": 1000, "timestamp": "2020-11-02T14:00:00Z" },
     { "payer": "UNILEVER", "points": 200, "timestamp": "2020-10-31T11:00:00Z" },
@@ -17,7 +19,7 @@ const data = [
     { "payer": "DANNON", "points": 300, "timestamp": "2020-10-31T10:00:00Z" },
 ]
 
-
+// INITAL GET REQUEST FOR PAYER AND POINTS AND TO LOAD LANDING PAGE
 app.get("/", (req, res) => {
     let filterData = []
     data.forEach((entry) => filterData.push({ 'payer': entry.payer, 'points': entry.points }))
@@ -25,14 +27,18 @@ app.get("/", (req, res) => {
     res.render('index', { filterData });
 });
 
+// LOADS ADD PAYER
 app.get('/add-payer', (req, res) => {
     res.render("addPayer", { error })
 })
-
+// ON SUMBIT A POST REQUEST IS SENT ADDING THE NEW PAYER BEFORE REDIRECTING TO HOME PAGE
 app.post('/add-payer', (req, res) => {
     error = []
+
+    // FORM DATA RETRIEVED HERE
     const { payer, points } = req.body
 
+    // FORM VALIDATION TO INSURE ALL INFORMATION NECESSARY IS RECEIVED
     if (!payer) {
         error.push('Please provide a Payer')
     }
@@ -58,15 +64,15 @@ app.post('/add-payer', (req, res) => {
     res.redirect("/");
 })
 
-
+// LOADS POINT SPENDER PAGE
 app.get('/spend-points', (req, res) => {
     res.render("spendPoints", { error })
 })
 
-
+// RETURNS THE PAYER'S TOTAL POINTS AFTER USE AND UPDATES HOME PAGE
 app.post('/spend-points', (req, res) => {
     error = []
-    console.log("We are in here", req.body)
+
     const points = req.body.points
 
     if (!points) {
@@ -77,13 +83,16 @@ app.post('/spend-points', (req, res) => {
     for (const key in data) {
         sortTimes.push([key, data[key].timestamp])
     }
+
+    // SORTING OUR DATA BY ITS TIMESTAMP
     sortTimes.sort((a, b) => new Date(a[1]) - new Date(b[1]))
+
     let pointTally = points
     let fallingPoints = []
-    console.log(sortTimes)
+
+    // LOOPING OVER SORTTIMES TO GET AND REMOVE POINTS FROM PAYERS
     for (let i = 0; i < sortTimes.length; i++) {
         if (data[i].points < 0) { continue }
-        console.log(pointTally)
         if (data[i].points > pointTally) {
             data[i].points = data[i].points - pointTally;
             fallingPoints.push({ "payer": data[i].payer, "points": 0 - pointTally })
@@ -102,6 +111,7 @@ app.post('/spend-points', (req, res) => {
         })
         return;
     }
+
     console.log("Payers Point Subraction", fallingPoints)
     res.redirect("/");
 })
