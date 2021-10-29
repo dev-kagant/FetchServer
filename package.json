@@ -1,0 +1,24 @@
+{
+  "name": "Fetch",
+  "version": "1.0.0",
+  "description": "",
+  "main": "fetchServer.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dev-kagant/FetchServer.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dev-kagant/FetchServer/issues"
+  },
+  "homepage": "https://github.com/dev-kagant/FetchServer#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "pug": "^3.0.2"
+  }
+}

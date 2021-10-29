@@ -1,0 +1,14 @@
+extends layout.pug
+
+block content
+  h2 Fetching for Fetch Rewards
+  table
+    thead
+      tr
+        th Payer
+        th Points
+    tbody
+      each reward in filterData
+        tr
+          td #{reward.payer}
+          td #{reward.points}

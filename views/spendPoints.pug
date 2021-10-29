@@ -1,0 +1,15 @@
+extends layout.pug
+
+mixin input(type, name, label, value)
+  div
+    label(for=name) #{label}
+    input(type=type name=name label=label value=value)
+
+block content
+  ul
+    each err in error
+      li= err
+  h1 Please Enter Point Value
+  form(action="/spend-points", method= "post")
+    +input("number", "points", "Points", points)
+    input(type="submit")
